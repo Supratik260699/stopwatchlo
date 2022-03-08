@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Stopwatch</title>
+  <style>
+      /*body design*/
+        body{
+            background-color: #E4E9FD;
+            background-image: -webkit-linear-gradient(65deg, rgb(250, 6, 230) 30%, black 70%);
+            min-height: 1000px;
+            font-family: 'helvetica neue';   
+            display:flex;
+            flex-direction:column;
+            align-content:center;
+        }
+        .button{
+            display: flex;
+            margin:0 auto;
+            flex-wrap: wrap;
+          justify-content:space-around;
+        }
+        button{
+        margin:2vw 2vw;
+        }
+        /*hovering buttons*/
+        #user:hover{
+            background-color: rgb(250, 6, 79);
+            font-family: 'helvetica neue';
+            box-shadow: 0px 0px 6px 4px rgba(230,196,196,0.8);
+        }
+        #start:hover{
+            background-color: rgb(250, 6, 79);
+            font-family: 'helvetica neue';
+            box-shadow: 0px 0px 6px 4px rgba(230,196,196,0.8);
+        }
+        #clear:hover{
+            background-color: rgb(250, 6, 79);
+            font-family: 'helvetica neue';
+            box-shadow: 0px 0px 6px 4px rgba(230,196,196,0.8);
+        }
+        #stop:hover{
+            background-color: rgb(250, 6, 79);
+            font-family: 'helvetica neue';
+            box-shadow: 0px 0px 6px 4px rgba(230,196,196,0.8);
+        }
+        #reset:hover{
+            background-color: rgb(250, 6, 79);
+            font-family: 'helvetica neue';
+            box-shadow: 0px 0px 6px 4px rgba(230,196,196,0.8);
+        }
+        #lap{
+            padding: 20px;
+            color: whitesmoke;
+             padding-left: 42vw;
+            padding-top: 30px; 
+            /*border-right: 100vw;*/
+        }
+        /*buttons*/
+        #user{
+            color: whitesmoke;
+            background-color: black;
+            padding: 15px;
+            transition-delay: 0.2s;
+            border: 2px solid rgb(250, 6, 230);
+            border-radius: 5px;
+            padding-left: 3vw; 
+            padding-right: 3vw; 
+            margin-right: 2vw; 
+            font-family: 'helvetica neue';
+        }
+        #clear{
+            color: whitesmoke;
+            background-color: black;
+            padding: 15px;
+            transition-delay: 0.2s;
+            border: 2px solid rgb(250, 6, 230);
+            border-radius: 5px;
+             padding-left: 3vw;
+            padding-right: 3vw; 
+             margin-right: 2vw; 
+            font-family: 'helvetica neue';   
+        }
+        #stop{
+            color: whitesmoke;
+            background-color: black;
+            padding: 15px;
+            transition-delay: 0.2s;
+            border: 2px solid rgb(250, 6, 230);
+            border-radius: 5px;
+            padding-left: 3vw;
+            padding-right: 3vw; 
+            margin-right: 2vw;  
+            font-family: 'helvetica neue';
+        }
+        #reset{
+            color: whitesmoke;
+            background-color: black;
+            padding: 15px;
+            transition-delay: 0.2s;
+            border: 2px solid rgb(250, 6, 230);
+            border-radius: 5px;
+             padding-left: 3vw;
+            padding-right: 3vw; 
+             margin-right: 2vw; 
+            font-family: 'helvetica neue';
+        }
+        #start{
+/*             margin-left: 25vw; */
+            color: whitesmoke;
+            background-color: black;
+            padding: 15px;
+            transition-delay: 0.2s;
+            border: 2px solid rgb(250, 6, 230);
+            border-radius: 5px;
+             padding-left: 3vw;
+            padding-right: 3vw;
+            margin-right: 2vw; 
+            font-family: 'helvetica neue';
+        }
+        /*timer*/
+        #time{
+/*           position:absolute; */
+            color: aliceblue;
+            border: 5px solid aqua;
+            border-radius: 50%;
+            display: inline-block;
+            padding: 50px;
+            padding-top: 85px;
+            padding-bottom: 85px;
+            font-family: 'helvetica neue';
+            border-left-width: 10px;
+            border-right-width: 10px;
+            border-top-width: 3px;
+            border-bottom-width: 3px;
+            margin-left: 40vw;
+            margin-bottom: 20vh;
+            box-shadow: 0px 0px 6px 4px rgba(0, 236, 253, 0.8);
+        }
+/*mobile screen adaptibility*/
+@media screen and (max-width:840px){
+  #time{
+    margin-left: 35vw;
+  }
+}
+@media screen and (max-width:768px){
+  #time{
+    margin-left: 25vw;
+  }
+}
+@media screen and (max-width:390px){
+  #time{
+    margin-left: 8vw;
+  }
+}
+    </style>
+
+</head>
+<body>
+    <div class="timer">
+        <h1 id="time">00:00:00</h1>
+    </div>
+    <div class="button">
+        <button id="start" onclick="start()">Start</button>
+        <button id="stop" onclick="stop()">Stop</button>
+        <button id="reset" onclick="reset()">Reset</button>
+        <button id="user" onclick="track()">Lap</button>
+        <button id="clear" onclick="clear()">Clear</button>
+    </div>
+    <h2><div id="lap"></div></h2>  
+</body>
+  <script>
+   let sec=0;
+    let min=0;
+    let hour=0;
+    let displaysec=0;
+    let displaymin=0;
+    let displayhour=0;
+    var flag=false;
+    var resetb=false;
+    var lapc=false;
+    /*function for timer*/
+    function startWatch(){
+        sec++;
+        if(sec/60===1)
+        {
+            min++;
+            sec=0;
+            if(min/60===1)
+            {
+                hour++;
+                min=0;
+            }   
+        }
+        if(sec<10)
+        {
+            displaysec = '0' + sec.toString();
+        }
+        else{
+            displaysec =  sec.toString();
+        }
+        if(min<10)
+        {
+            displaymin = '0' + min.toString();
+        }
+        else{
+            displaymin =  min.toString();
+        }
+        if(hour<10)
+        {
+            displayhour = '0' + hour.toString();
+        }
+        else{
+            displayhour =  hour.toString();
+        }
+        document.getElementById('time').innerHTML = displayhour + ":" + displaymin + ":" + displaysec;
+    }
+    /*click events*/
+    document.getElementById("start").addEventListener("click", myfunction);
+    document.getElementById("reset").addEventListener("click", resetfunction);
+    document.getElementById("stop").addEventListener("click", stopfunction);
+    document.getElementById("user").addEventListener("click", userfunction);
+    document.getElementById("clear").addEventListener("click", clearfunction);
+    function clearfunction()
+    {
+        document.getElementById('lap').innerHTML ="";
+    }
+    function stopfunction()
+    {
+        if(flag==true)
+        {
+            clearInterval(Interval);
+            flag=false;
+        }
+    }
+    function userfunction()
+    {
+        if(flag==false && lapc==false)
+        {
+            var str="00:00:00"
+        }
+        else
+        {
+            var str = displayhour + ":" + displaymin + ":" + displaysec;
+            lapc=true;
+        }
+        
+        //document.getElementById('lap').innerHTML=arr;
+        document.getElementById('lap').innerHTML += str+"<br>"+"<br>";
+    }
+    function resetfunction()
+    {
+        clearTimeout(Interval);
+        document.getElementById('time').innerHTML = "00:00:00";
+        hour=0;
+        min=0;
+        sec=0;
+        flag=false;
+        resetb=true;
+    }
+    function myfunction()
+    {
+        if(flag==false)
+        {
+            
+            Interval = window.setInterval(startWatch,1000);
+            flag=true;
+        }
+    }
+</script>
+</html>
